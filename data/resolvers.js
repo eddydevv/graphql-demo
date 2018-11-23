@@ -5,12 +5,22 @@ import { Aliens } from './dbConnectors'
 //resolver map
 export const resolvers = { 
   Query: {
-    getFriend: ({ id }) => {
-      return new Friend(id, friendDatabase[id])
+    getOneFriend: (root, { id }) => {
+      return new Promise((resolve, object) => {
+        Friends.findById(id, (err, friend) => {
+          if (err) reject(err)
+          else resolve(friend)
+        })
+      })
     },    
 
-    getFriends: () => {
-      return Friends.findAll()
+    getFriends: (root) => {
+      return new Promise((resolve, object) => {
+        Friends.find((err, friends) => {
+          if (err) reject(err)
+          else resolve(friends)
+        })
+      })
     },
     
     getAliens: () => {
